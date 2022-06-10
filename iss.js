@@ -91,7 +91,6 @@ const nextISSTimesForMyLocation = function(callback) {
       if (error) {
         return callback(error, null);
       }
-
       fetchISSFlyOverTimes(location, (error, passTime) => {
         if (error) {
           return callback(error, null);
