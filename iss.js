@@ -76,16 +76,37 @@ const fetchISSFlyOverTimes = function(coords, callback) {
     }
     //response contains the ISSFlyOverTime so we will just call it on the variable
     const passes = JSON.parse(body).response;
-    console.log(passes);
     callback(null, passes);
 
   });
 };
 
 
+const nextISSTimesForMyLocation = function(callback) {
+  fetchMyIP((error, ip) => {
+    if (error) {
+      return callback(error, null);
+    }
+    fetchCoordsByIP(ip, (error, location) => {
+      if (error) {
+        return callback(error, null);
+      }
+
+      fetchISSFlyOverTimes(location, (error, passTime) => {
+        if (error) {
+          return callback(error, null);
+        }
+
+        callback(null, passTime);
+      });
+    });
+  });
+};
+
 
 module.exports = {
   fetchMyIP,
   fetchCoordsByIP,
-  fetchISSFlyOverTimes
+  fetchISSFlyOverTimes,
+  nextISSTimesForMyLocation
 };
